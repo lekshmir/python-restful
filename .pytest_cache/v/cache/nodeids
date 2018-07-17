@@ -1,0 +1,6 @@
+[
+  "test_login.py::test_userauth_get",
+  "test_login.py::test_user_post_success",
+  "test_login.py::test_user_post_failure",
+  "test_login.py::test_user_post_missing_pwd"
+]
