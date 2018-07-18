@@ -1,21 +1,24 @@
 from flask_restful import Resource
-from .User import User, users_list
+from .User import Users, users_list
+
+from app import db
+from models import User, Role
+
 from . import parser
-
-
 def user_exists(name):
-    name_list = [user.user_name for user in users_list]
-    if name in name_list:
+    n = User.query.filter_by(user_name=name).count()
+    if n:
         return True
     else:
         return False
 
-
 class UserHandling(Resource):
+
     def post(self):
         args = parser.parse_args()
         if not user_exists(args['user_name']):
-            users_list.append(User(**args))
+            db.session.add(User(**args))
+            db.session.commit()
             return {"uid": user.user_id for user in users_list if user.user_name == args['user_name']}, 201
         else:
             return {"uid": user.user_id for user in users_list if user.user_name == args['user_name']}, 409
